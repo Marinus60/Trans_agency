@@ -1,0 +1,15 @@
+Branches,Филиалы
+Transport,Транспорт
+Orders,Заказы
+Choose language,Выбрать язык
+Exit,Выход
+View branches,Просмотр филиалов
+Add branches,Добавить филиал
+Delete branches,Удалить филиал
+View transport,Просмотр транспорта
+Add transport,Добавить транспорт
+Delete transport,Удалить транспорт
+View orders,Просмотр заказов
+New order,Новый заказ
+Back,Назад
+Select,Выберите

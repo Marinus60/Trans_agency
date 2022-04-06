@@ -1,10 +1,15 @@
 import sqlite3 as sq
 import menu
+import table
 
 
 def create_db():
     con = sq.connect("database.db")
     cur = con.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS language (
+                lang INTEGER)""")
+    cur.execute("""INSERT INTO language (lang) VALUES (0)""")
+    con.commit()
     cur.execute("DROP TABLE IF EXISTS branch")
     cur.execute("""CREATE TABLE IF NOT EXISTS branch (
                 id_city INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,13 +49,13 @@ class Branch():
         coord_city=input("Enter city coordinates: ")
         category_city=input("Enter city category: ")
         query = """INSERT INTO branch
-                                      (name_city, coord_city, category_city)
-                                      VALUES (?, ?, ?);"""
+                (name_city, coord_city, category_city)
+                VALUES (?, ?, ?);"""
         data = (name_city,coord_city,category_city)
         cur.execute(query, data)
         con.commit()
         con.close()
-        menu.main_menu()
+        return menu.main_menu()
     def del_branch(self):
         con = sq.connect("database.db")
         cur = con.cursor()
@@ -60,22 +65,17 @@ class Branch():
         con.commit()
 
         con.close()
-        menu.main_menu()
+        return menu.main_menu()
     def view_branch(self):
         con = sq.connect("database.db")
         cur = con.cursor()
         cur.execute("""SELECT * FROM branch""")
         rec = cur.fetchall()
-        print(len(rec))
-        for row in rec:
-            print("ID_city:", row[0])
-            print("Name_city:", row[1])
-            print("Coord_city:", row[2])
-            print("Category_city:", row[3], end="\n\n")
+        title = ("ID_city", "Name_city", "Coord_city", "Cat_city")
+
+        table.table_creator(title,rec)
         con.close()
         input("Press any key!!!")
-        menu.main_menu()
-
 
 class Transport:
     def __init__(self):
@@ -84,17 +84,52 @@ class Transport:
         self.price = price
         self.speed = speed
         self.category = category
+    def add_transport(self):
+        con = sq.connect("database.db")
+        cur = con.cursor()
+        name_city=input("Enter the name of the transport: ")
+        coord_city=input("Enter cost of delivery: ")
+        category_city=input("Enter city category: ")
+        query = """INSERT INTO branch
+                (name_city, coord_city, category_city)
+                VALUES (?, ?, ?);"""
+        data = (name_city,coord_city,category_city)
+        cur.execute(query, data)
+        con.commit()
+        con.close()
+        return menu.main_menu()
+    def del_transport(self):
+        con = sq.connect("database.db")
+        cur = con.cursor()
+        name_city = input("Enter the name of the city: ")
+        query="""DELETE FROM branch WHERE name_city = ?"""
+        cur.execute(query,(name_city,))
+        con.commit()
+
+        con.close()
+        return menu.main_menu()
+    def view_transport(self):
+        con = sq.connect("database.db")
+        cur = con.cursor()
+        cur.execute("""SELECT * FROM branch""")
+        rec = cur.fetchall()
+        title = ("ID_city", "Name_city", "Coord_city", "Cat_city")
+
+        table.table_creator(title,rec)
+        con.close()
+        input("Press any key!!!")
 
 class Orders(Branch,Transport):
     def __init__(self):
         self.id_order=id_order
         self.weight=weight
-
-#create_db()
+m=''
+create_db()
 agency=Branch()
-m=menu.main_menu()
-if m=='b1': agency.view_branch()
-if m=='b2': agency.add_branch()
-if m=='b3': agency.del_branch()
+while m!='0':
+    m=menu.main_menu()
+    if m=='b1': agency.view_branch()
+    if m=='b2': agency.add_branch()
+    if m=='b3': agency.del_branch()
 
 
