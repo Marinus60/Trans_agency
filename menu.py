@@ -8,7 +8,9 @@ def main_menu():
     cur = con.cursor()
     cur.execute("""SELECT * FROM language""")
     lang=cur.fetchone()
+    global l
     l=int(lang[0])
+    global a
     a=[]
     f=open('translate.txt','r')
     for line in f:
@@ -18,11 +20,11 @@ def main_menu():
 
     print("1 "+a[0][l])
     print("2 "+a[1][l])
-    print("3 Orders (Заказы)")
-    print("4 Choose language (Выбрать язык)")
+    print("3 "+a[2][l])
+    print("4 "+a[3][l])
 
-    print("0 Exit (Выход)", end='\n\n')
-    n = input("Select (Выберите): ")
+    print("0 "+a[4][l], end='\n\n')
+    n = input(a[-1][l]+':')
     if n == '0': return '0'
     if n == '1': return branches_menu()
     if n == '2': return transport_menu()
@@ -31,15 +33,31 @@ def main_menu():
 
 
 def language_menu():
-    lang=0
+    os.system('clear')
+    print("1 " + a[13][l])
+    print("2 " + a[14][l])
+    print("0 " + a[-2][l], end='\n\n')
+    n = input(a[-1][l] + ':')
+    if n == '0':
+        return main_menu()
+    else:
+        con = sq.connect("database.db")
+        cur = con.cursor()
+        if n=='1':
+            cur.execute("""UPDATE language SET lang=0""")
+        elif n=='2':
+            cur.execute("""UPDATE language SET lang=1""")
+
+        con.commit()
+        con.close()
 
 def branches_menu():
     os.system('clear')
-    print("1 View branches (Просмотр филиалов)")
-    print("2 Add branches (Добавить филиал)")
-    print("3 Delete branches (Удалить филиал)")
-    print("0 Back (Назад)", end='\n\n')
-    n = input("Select (Выберите): ")
+    print("1 "+a[5][l])
+    print("2 "+a[6][l])
+    print("3 "+a[7][l])
+    print("0 "+a[-2][l], end='\n\n')
+    n = input(a[-1][l]+':')
     if n == '0':
         return main_menu()
     else:
@@ -47,11 +65,11 @@ def branches_menu():
 
 def transport_menu():
     os.system('clear')
-    print("1 View transport (Просмотр транспорта)")
-    print("2 Add transport (Добавить транспорт")
-    print("3 Delete transport (Удалить транспорт")
-    print("0 Back (Назад)", end='\n\n')
-    n = input("Select (Выберите): ")
+    print("1 "+a[8][l])
+    print("2 "+a[9][l])
+    print("3 "+a[10][l])
+    print("0 "+a[-2][l], end='\n\n')
+    n = input(a[-1][l]+':')
     if n == '0':
         return main_menu()
     else:
@@ -59,10 +77,10 @@ def transport_menu():
 
 def orders_menu():
     os.system('clear')
-    print("1 View orders (Просмотр заказов)")
-    print("2 Add branches (Новый заказ)")
-    print("0 Back (Назад)", end='\n\n')
-    n = input("Select (Выберите): ")
+    print("1 "+a[11][l])
+    print("2 "+a[12][l])
+    print("0 " + a[-2][l], end='\n\n')
+    n = input(a[-1][l] + ':')
     if n == '0':
         return main_menu()
     else:

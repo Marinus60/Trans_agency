@@ -11,5 +11,7 @@ Add transport,Добавить транспорт
 Delete transport,Удалить транспорт
 View orders,Просмотр заказов
 New order,Новый заказ
+English,Английский
+Russian,Русский
 Back,Назад
 Select,Выберите
